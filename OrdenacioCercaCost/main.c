@@ -3,15 +3,14 @@
 #include <conio.h>
 #define N 20
 
-int v[N];
-void inicialitza()
+void inicialitza(int v[N])
 {
     int i;
     srand(time(NULL));
-    for (i = 0; i < N; i++) v[i] = rand();
+    for (i = 0; i < N; i++) v[i] = (rand()%(N*100));
 }
 
-void visualitza()
+void visualitza(int v[N])
 {
     int i;
     printf ("Vector amb %i elements\n", N);
@@ -22,7 +21,9 @@ void visualitza()
 }
 int main()
 {
-    inicialitza();
-    visualitza();
+    int v[N], cmpt;
+
+    inicialitza(v);
+    visualitza(v);
     getch();
 }
