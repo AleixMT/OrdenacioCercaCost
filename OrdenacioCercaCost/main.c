@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #define N 20
 
 
@@ -11,11 +12,11 @@ void inicialitza(unsigned int v[], int lenght)
     for (i = 0; i < lenght; i++) v[i] = rand()%(lenght*100);
 }
 
-void visualitza(unsigned int v[], int lenght)
+void visualitza(unsigned int v[], int l)
 {
     int i;
-    printf ("Vector amb %i elements\n", length);
-    for (i = 0; i < length; i++)
+    printf ("Vector amb %i elements\n", l);
+    for (i = 0; i < l; i++)
     {
         printf("%d, ", v[i]);
     }
@@ -38,7 +39,7 @@ void selection_sort(unsigned int v[], int length){
             }
         }
         if(iMin != j){
-            swap(v[j], v[iMin]);
+            swap(v, j, iMin);
         }
     }
 
@@ -49,5 +50,11 @@ int main()
 {
     unsigned int v[N];
     inicialitza(v, N);
-    visualitza(v);
+    visualitza(v, N);
+    selection_sort(v, N);
+
+    printf("\nAfter selection sort:\n");
+    visualitza(v, N);
+
+    return(0);
 }
