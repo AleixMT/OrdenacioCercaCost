@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1506408491 source:c:\users\deim\desktop\ordenaciocercacost\ordenaciocercacost\main.c
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+
