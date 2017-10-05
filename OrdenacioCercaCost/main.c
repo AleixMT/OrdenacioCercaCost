@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <stdbool.h>
 #define N 20
 
 
@@ -45,6 +46,26 @@ void selection_sort(unsigned int v[], int length){
 
 }
 
+bool dicotomic_search(unsigned int v[], int lenght, int var){
+    int inf=0;
+    int sup=lenght-1;
+    int cent;
+    bool trobat=false;
+
+    while(inf<=sup && !trobat){
+        cent=(sup-inf)/2;
+        if(v[cent]==var){
+            trobat=true;
+        }
+        else{
+            if(v[cent]>var){
+                sup=cent;
+            }
+            else inf = cent;
+        }
+    }
+    return trobat;
+}
 
 int main()
 {
