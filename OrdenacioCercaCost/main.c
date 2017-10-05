@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include <conio.h>
+//#include <conio.h>
 #include <time.h>
 #define N 20
 #define NUM_ELEMENTS_ARRAY(x) (sizeof(x)/sizeof(x)[0]);
@@ -87,6 +87,27 @@ int opcio ()
     return (c - 47);
 }
 
+bool dicotomic_search(unsigned int v[], int lenght, int var){
+    int inf=0;
+    int sup=lenght-1;
+    int cent;
+    bool trobat=false;
+
+    while(inf<=sup && !trobat){
+        cent=(sup-inf)/2;
+        if(v[cent]==var){
+            trobat=true;
+        }
+        else{
+            if(v[cent]>var){
+                sup=cent;
+            }
+            else inf = cent;
+        }
+    }
+    return trobat;
+}
+
 int main()
 {
     unsigned int v[100], cmpt;
@@ -104,7 +125,5 @@ int main()
     }
     getch();
     visualitza(v, midaVector);
-
-
     return 0;
 }
