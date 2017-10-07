@@ -6,10 +6,11 @@
 	<conio.h>
 	<time.h>
 
-1507373015 source:d:\ordenaciocercacost\ordenaciocercacost\main.c
+1507389958 source:d:\ordenaciocercacost\ordenaciocercacost\main.c
 	<stdio.h>
 	<stdlib.h>
 	<stdbool.h>
 	<conio.h>
 	<time.h>
+	<windows.h>
 
