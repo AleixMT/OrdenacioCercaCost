@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include <conio.h>  // En entorns Unix aquesta llibreria no funciona i podem utilitzar la equivalent ncurses.h
+//#include <conio.h>  // En entorns Unix aquesta llibreria no funciona i podem utilitzar la equivalent ncurses.h
 #include <time.h>
-#include <windows.h>
+//#include <windows.h>
 
 #define N 20
 #define NUM_REPETICIONS 1
@@ -114,7 +114,7 @@ void imprimeixMatriudouble(int num_proves,double m[][num_proves], int mides_vect
 }
 // Imprimeix per pantalla una matriu que relaciona el tipus d'algoritme utilitzat amb la mida del vector
 // No utilitza el vector del main ja que per a fer less diferents proves hem de redefinir la mida del vector en temps d'execució
-void mesures_temps()
+/*void mesures_temps()
 {
     LARGE_INTEGER frequency;
     LARGE_INTEGER start;
@@ -192,7 +192,7 @@ void mesures_temps()
     imprimeixMatriudouble(num_proves, mat_t, mida_vector, 1);
     imprimeixMatriudouble(num_proves, mat_i, mida_vector, 2);
 
-}
+}*/
 
 // Mostra el menu d'opcions i evita que l'usuari esculli una opcio incorrecta
 int opcio ()
@@ -200,30 +200,35 @@ int opcio ()
     int c=0;
     while (1){
     printf ("\nQue vols fer?\n1.-Seleccio\n2.-Bombolla\n3.-Insercio\n4.-Cerca dicotomica\n5.-Taula de resultats (tarda uns quant segons)\n6.-Reomplir vector\n7.-Visualitzar contingut del vector\t\t->");
-    c = getche();
-    if (c < 49 || c > 56) printf ("\n\nOpcio incorrecta, torna-ho a intentar...");
-    else break;
+    //c = getche();
+    //if (c < 49 || c > 56) printf ("\n\nOpcio incorrecta, torna-ho a intentar...");
+    //else break;
+    scanf("%d",&c);
+    break;
     }
-    return (c - 48);
+    //return (c - 48);
+    return c;
 }
 
 // Cerca un valor dins del vector i retorna fals o cert segons si l'ha trobat
-bool dicotomic_search(unsigned int v[], int lenght, int var){
+bool dicotomic_search(unsigned int v[], int lenght, int var, int *counter){
     int inf=0;
     int sup=lenght-1;
     int cent;
     bool trobat=false;
+    *counter=0;
 
     while(inf<=sup && !trobat){
-        cent=(sup-inf)/2;
+        cent=(sup-inf)/2+inf;
+        *counter=*counter+1;
         if(v[cent]==var){
             trobat=true;
         }
         else{
             if(v[cent]>var){
-                sup=cent;
+                sup=cent-1;
             }
-            else inf = cent;
+            else inf = cent+1;
         }
     }
     return trobat;
@@ -233,6 +238,7 @@ int main()
 {
     unsigned int v[100], valor;
     int midaVector = NUM_ELEMENTS_ARRAY(v);
+    int counter;
 
     ompleVectorAleatoriament(v, midaVector);
     while (true)
@@ -245,10 +251,10 @@ int main()
             case 4:
                 printf("\nQuin valor vols buscar?\n");
                 scanf("%i", &valor);
-                if (dicotomic_search(v, midaVector, valor)) printf("\n\nEl valor es troba dins del nostre vector!!");
-                    else printf("\n\nEl valor no es troba dins del nostre vector!!");
+                if (dicotomic_search(v, midaVector, valor, &counter)) printf("\n\nEl valor es troba dins del nostre vector i ha tardat %d iteracions",counter);
+                    else printf("\n\nEl valor no es troba dins del nostre vector i ha tardat %d iteracions",counter);
                 break;
-            case 5: mesures_temps(v, midaVector); break;
+            case 5: //mesures_temps(v, midaVector); break;
             case 6: ompleVectorAleatoriament(v, midaVector); break;
             case 7: visualitza(v, midaVector); break;
         }
