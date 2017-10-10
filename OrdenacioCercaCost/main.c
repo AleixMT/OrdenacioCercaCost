@@ -40,20 +40,21 @@ void swap(unsigned int v[], int i, int j){
 
 
 int bombolla (unsigned int v[], int midaVector){
-    int i, cmpt=0;
+    int i, j, cmpt=0;
     bool swapped = false;
-    while (!swapped)
-    {
-        for(i=1; i < midaVector; i++)
+
+    for(i=0; i < midaVector-1; i++)
         {
-            if (v[i-1] > v[i]){
-                swap(v, i-1, i);
+            for(j=0; j<midaVector-1-i; j++){
+                if (v[j] > v[j+1]){
+                swap(v, j, j+1);
                 swapped = true;
+                }
+                cmpt++;
             }
-            cmpt++;
+        if(!swapped) break;
         }
-         midaVector = midaVector-1;
-    }
+        //midaVector = midaVector-1;
     return cmpt;
 }
 
@@ -101,14 +102,14 @@ void imprimeixMatriudouble(int num_proves,double m[][num_proves], int mides_vect
     printf("\n\n");
     if (tipus == 1) printf ("Unitats de les dades: segons\n");
     else printf ("Unitats de les dades: milions d'iteracions del bucle intern\n");
-    printf ("* Elements\t* Bombolla\t* Seleccio\t* Insercio");
+    printf ("Elements\tBombolla\tSeleccio\tInsercio");
     for (j = 0; j < num_proves; j++)
     {
         printf("\n* %i\t\t", mides_vector[j]);
         for (i = 0; i < 3; i++)
         {
             if (tipus == 1) printf("* %f\t", m[i][j]);
-            else printf("* %.3f\t", m[i][j]/1000000);
+            else printf("* %f\t", m[i][j]/1000000);
         }
     }
 }
@@ -199,12 +200,10 @@ int opcio ()
 {
     int c=0;
     while (1){
-    printf ("\nQue vols fer?\n1.-Seleccio\n2.-Bombolla\n3.-Insercio\n4.-Cerca dicotomica\n5.-Taula de resultats (tarda uns quant segons)\n6.-Reomplir vector\n7.-Visualitzar contingut del vector\t\t->");
-    //c = getche();
-    //if (c < 49 || c > 56) printf ("\n\nOpcio incorrecta, torna-ho a intentar...");
-    //else break;
-    scanf("%d",&c);
-    break;
+    printf ("\nQue vols fer?\n1.-Seleccio\n2.-Bombolla\n3.-Insercio\n4.-Cerca dicotomica\n5.-Taula de resultats (tarda uns quant segons)\n6.-Reomplir vector\n7.-Visualitzar contingut del vector\n8.-Sortir\t\t->");
+    c = getche();
+    if (c < 49 || c > 56) printf ("\n\nOpcio incorrecta, torna-ho a intentar...");
+    else break;
     }
     //return (c - 48);
     return c;
@@ -257,6 +256,7 @@ int main()
             case 5: //mesures_temps(v, midaVector); break;
             case 6: ompleVectorAleatoriament(v, midaVector); break;
             case 7: visualitza(v, midaVector); break;
+            case 8: return 0;
         }
         printf ("\n\n");
     }
