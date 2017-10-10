@@ -40,20 +40,21 @@ void swap(unsigned int v[], int i, int j){
 
 
 int bombolla (unsigned int v[], int midaVector){
-    int i, cmpt=0;
+    int i, j, cmpt=0;
     bool swapped = false;
-    while (!swapped)
-    {
-        for(i=1; i < midaVector; i++)
+
+    for(i=0; i < midaVector-1; i++)
         {
-            if (v[i-1] > v[i]){
-                swap(v, i-1, i);
+            for(j=0; j<midaVector-1-i; j++){
+                if (v[j] > v[j+1]){
+                swap(v, j, j+1);
                 swapped = true;
+                }
+                cmpt++;
             }
-            cmpt++;
+        if(!swapped) break;
         }
-         midaVector = midaVector-1;
-    }
+        //midaVector = midaVector-1;
     return cmpt;
 }
 
