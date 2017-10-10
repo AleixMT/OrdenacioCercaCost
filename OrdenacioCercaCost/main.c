@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-//#include <conio.h>  // En entorns Unix aquesta llibreria no funciona i podem utilitzar la equivalent ncurses.h
+#include <conio.h>  // En entorns Unix aquesta llibreria no funciona i podem utilitzar la equivalent ncurses.h
 #include <time.h>
-//#include <windows.h>
+#include <windows.h>
 
 #define N 20
 #define NUM_REPETICIONS 1
@@ -114,7 +114,7 @@ void imprimeixMatriudouble(int num_proves,double m[][num_proves], int mides_vect
 }
 // Imprimeix per pantalla una matriu que relaciona el tipus d'algoritme utilitzat amb la mida del vector
 // No utilitza el vector del main ja que per a fer less diferents proves hem de redefinir la mida del vector en temps d'execució
-/*void mesures_temps()
+void mesures_temps()
 {
     LARGE_INTEGER frequency;
     LARGE_INTEGER start;
@@ -192,7 +192,7 @@ void imprimeixMatriudouble(int num_proves,double m[][num_proves], int mides_vect
     imprimeixMatriudouble(num_proves, mat_t, mida_vector, 1);
     imprimeixMatriudouble(num_proves, mat_i, mida_vector, 2);
 
-}*/
+}
 
 // Mostra el menu d'opcions i evita que l'usuari esculli una opcio incorrecta
 int opcio ()
