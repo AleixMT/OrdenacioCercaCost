@@ -20,3 +20,11 @@
 	<stdbool.h>
 	<time.h>
 
+1508015255 source:c:\users\crizl\documents\mp\ordenaciocercacost\ordenaciocercacost\main.c
+	<stdio.h>
+	<stdlib.h>
+	<stdbool.h>
+	<conio.h>
+	<time.h>
+	<windows.h>
+

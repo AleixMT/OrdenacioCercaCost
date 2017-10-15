@@ -4,6 +4,7 @@
 #include <conio.h>  // En entorns Unix aquesta llibreria no funciona i podem utilitzar la equivalent ncurses.h
 #include <time.h>
 #include <windows.h>
+#include <math.h>
 
 #define N 20
 #define NUM_REPETICIONS 1
@@ -113,8 +114,29 @@ void imprimeixMatriudouble(int num_proves,double m[][num_proves], int mides_vect
         }
     }
 }
+//funcio per a calcular la desviacio estandar d'un vector de dades
+float desviacioStandard (float dades[], int midaVector){
+    float suma = 0.0;
+    float mitjana, devStand = 0.0;
+    int i;
+    //sumatori de totes les dades
+    for (i=0; i<midaVector; i++){
+        suma += dades[i];
+    }
+    //calcular a mitjana
+    mitjana = suma/midaVector;
+    //calcular desviacio
+    for (i=0; i<midaVector; i++){
+        devStand += pow(dades[i]-mitjana, 2);
+    }
+    //retornem l'arrel quadrada
+    return sqrt(devStand/midaVector);
+}
+
+
+
 // Imprimeix per pantalla una matriu que relaciona el tipus d'algoritme utilitzat amb la mida del vector
-// No utilitza el vector del main ja que per a fer less diferents proves hem de redefinir la mida del vector en temps d'execució
+// No utilitza el vector del main ja que per a fer les diferents proves hem de redefinir la mida del vector en temps d'execució
 void mesures_temps()
 {
     LARGE_INTEGER frequency;
@@ -190,6 +212,16 @@ void mesures_temps()
         mat_t[2][j] = acumulador/(double)NUM_REPETICIONS;
         mat_i[2][j] = acumulador_i/(double)NUM_REPETICIONS;
     }
+
+    //CALCULAR DESVIACIO
+    //PROVES
+    int midaVector = 10;
+    float dades[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+    printf("\nDesviació estàndard = %.6f", desviacioStandard(dades, midaVector));
+
+
+
+    //imprimir per pantalla
     imprimeixMatriudouble(num_proves, mat_t, mida_vector, 1);
     imprimeixMatriudouble(num_proves, mat_i, mida_vector, 2);
 
@@ -205,8 +237,8 @@ int opcio ()
     if (c < 49 || c > 56) printf ("\n\nOpcio incorrecta, torna-ho a intentar...");
     else break;
     }
-    //return (c - 48);
-    return c;
+    return (c - 48);
+    //return c;
 }
 
 // Cerca un valor dins del vector i retorna fals o cert segons si l'ha trobat
@@ -253,7 +285,7 @@ int main()
                 if (dicotomic_search(v, midaVector, valor, &counter)) printf("\n\nEl valor es troba dins del nostre vector i ha tardat %d iteracions",counter);
                     else printf("\n\nEl valor no es troba dins del nostre vector i ha tardat %d iteracions",counter);
                 break;
-            case 5: //mesures_temps(v, midaVector); break;
+            case 5: mesures_temps(v, midaVector); break;
             case 6: ompleVectorAleatoriament(v, midaVector); break;
             case 7: visualitza(v, midaVector); break;
             case 8: return 0;
