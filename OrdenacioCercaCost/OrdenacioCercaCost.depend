@@ -6,13 +6,14 @@
 	<conio.h>
 	<time.h>
 
-1507613311 source:d:\ordenaciocercacost\ordenaciocercacost\main.c
+1508174858 source:d:\ordenaciocercacost\ordenaciocercacost\main.c
 	<stdio.h>
 	<stdlib.h>
 	<stdbool.h>
 	<conio.h>
 	<time.h>
 	<windows.h>
+	<math.h>
 
 1507618726 source:/home/milax/Desktop/OrdenacioCercaCost/OrdenacioCercaCost/main.c
 	<stdio.h>
