@@ -11,15 +11,7 @@
 #define NUM_ELEMENTS_ARRAY(x) (sizeof(x)/sizeof(x)[0]);
 
 
-// Inicialitza seed i plena el vetor fins al final amb valors random
-void ompleVectorAleatoriament (unsigned int v[], int midaVector)
-{
-    int i;
-    srand(time(NULL));
-    for (i=0; i<midaVector; i++){
-        v[i] = rand()%(midaVector*100);
-    }
-}
+
 
 //Imprimeix el vector per pantalla
 void visualitza(unsigned int v[],int midaVector)
