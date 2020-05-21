@@ -135,7 +135,12 @@ int main(int argc, char *argv[]) {
     parameters_random_element = calculateMetrix(results_random_element)
     parameters_not_present_element = calculateMetrix(results_not_present_element);
 
-
+    printf("Element present:\n");
+    printResults(parameters_present_element);
+    printf("Element aleatori:\n");
+    printResults(parameters_random_element);
+    printf("Element no present:\n");
+    printResults(parameters_not_present_element);
 
 	printf("Get 0, 4, ultim llista: %u %u %u\n", get(*arrayList, 0), get(*arrayList, 4), get(*arrayList, arrayList->num_elements - 1));
 	printf("%s", toString(*arrayList));
