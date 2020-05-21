@@ -1,5 +1,5 @@
 //
-// Created by sERGI vIVES on 21/5/2020.
+// Created by Sergi Vives on 21/5/2020.
 //
 
 #ifndef ORDENACIOCERCACOST_ERRORCODES_H

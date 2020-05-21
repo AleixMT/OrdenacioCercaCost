@@ -11,6 +11,9 @@
 #include <stdio.h>  // To use printf and file manipulation functions
 #include <limits.h>  // To use datatype sumbols such as INT_MIN
 #include <string.h>  // To use the String library
+#include <random.h>  // To use the pseudorandom number generator
+#include <math.h>  // To use square root
+
 
 // Project includes
 #include "ErrorCodes.h"
@@ -27,19 +30,23 @@ typedef struct ArrayList {
 
 // Function headers
 // Basic functions
-void create(ArrayList **arrayList, unsigned int size);
+void create(ArrayList **arrayList);
 bool destroy(ArrayList *arrayList);
 bool isEmpty(ArrayList arrayList);
 bool isFull(ArrayList arrayList);
-void add(ArrayList **arrayList, unsigned int element);
+void add(ArrayList *arrayList, unsigned int element);
 unsigned int get(ArrayList arrayList, unsigned int position);
-unsigned int pop(ArrayList *arrayList, unsigned int position);
+unsigned int removeAt(ArrayList *arrayList, unsigned int position);
 
 // Decorators
-unsigned int removeLast(ArrayList *arrayList);
+unsigned int pop(ArrayList *arrayList);
 unsigned int tail(ArrayList arrayList);
+void addValues(ArrayList *arrayList, unsigned int elements[], unsigned int num_elements);
 
 // Specific project functions
 char* toString(ArrayList arrayList);
+void populate(ArrayList *arrayList, int num_elements);
+void sortBubble(ArrayList *arrayList);
+unsigned int searchBinary(ArrayList arrayList, unsigned int value, int *counter);
 
 #endif //ORDENACIOCERCACOST_ARRAYLIST_H

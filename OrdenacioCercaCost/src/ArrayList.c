@@ -1,30 +1,16 @@
 #include "ArrayList.h"
 
-
 //
 // Created by Sergi Vives on 14/4/20.
 //
 
-/**
- * PROJECT SPECIFIC FUNCTIONS
- **/
-
-// Inicialitza seed i plena el vetor fins al final amb valors random
-void ompleVectorAleatoriament (unsigned int v[], int midaVector)
-{
-    int i;
-    srand(time(NULL));
-    for (i=0; i<midaVector; i++){
-        v[i] = rand()%(midaVector*100);
-    }
 }
-
 /*
  * PRIVATE FUNCTIONS
  */
 
 /**
- * Auxiliar function for the bubble sort algorithms.
+ * Swaps two values in indexed position i and j
  * @param array
  * @param i position of the first value
  * @param j position of the second value
@@ -37,7 +23,6 @@ void swap(unsigned int array[], int i, int j)
 }
 
 
-
 /*
  * PUBLIC FUNCTIONS
  */
@@ -45,18 +30,11 @@ void swap(unsigned int array[], int i, int j)
 // BASIC ARRAYLIST FUNCTIONS
 /**
  * Reserves a certain amount of memory for the ArrayList and initializes its control data.
- * @param list pointer to ArrayList
+ * @param arrayList pointer to ArrayList
  * @param size initial size of the ArrayList
  */
-void create(ArrayList **arrayList, unsigned int size)
+void create(ArrayList **arrayList)
 {
-    // Parameter checking
-    if (size == 0)
-    {
-        fprintf(stderr, "ERROR: Could not create ArrayList. The size of the ArrayList has to be a natural number. Aborting... \n");
-        exit(ERROR_BAD_PARAMETERS);  // Abort program
-    }
-
     // Reserve memory for the data structure of the ArrayList
     *arrayList = (ArrayList*) malloc(sizeof(ArrayList));
     if (*arrayList == NULL)
@@ -66,7 +44,7 @@ void create(ArrayList **arrayList, unsigned int size)
     }
 
     // Reserve memory for the array of the ArrayList
-    (**arrayList).array = malloc(sizeof(unsigned int) * size);
+    (**arrayList).array = malloc(sizeof(unsigned int) * 10);
     if ((**arrayList).array == NULL)
     {
         fprintf(stderr, "ERROR: Could not allocate memory for the array of ArrayList. Aborting... \n");
@@ -101,32 +79,54 @@ bool destroy(ArrayList *arrayList)
 
 
 /**
+ * Returns true if the ArrayList is empty. False otherwise.
+ * @param arrayList ArrayList
+ * @return
+ */
+bool isEmpty(ArrayList arrayList)
+{
+    return (arrayList.num_elements == 0);
+}
+
+
+/**
+ * Returns true if the ArrayList is full. False otherwise.
+ * @param arrayList ArrayList
+ * @return
+ */
+bool isFull(ArrayList arrayList)
+{
+    return (arrayList.num_elements == arrayList.max_elements);
+}
+
+
+/**
  * Adds a new element to the ArrayList and reserves more memory if needed.
  * @param arrayList pointer to a pointer of the ArrayList 
  * @param element to add to the list
  */
-void add(ArrayList **arrayList, unsigned int element)
+void add(ArrayList *arrayList, unsigned int element)
 {
     if (arrayList == NULL)
     {
         fprintf(stderr, "ERROR: Could not add element to an ArrayList. It does not exist. Aborting... \n");
         exit(ERROR_NONEXISTENT_DATA_STRUCTURE);  // Abort the program
     }
-    if (isFull(**arrayList))
+    if (isFull(*arrayList))
     {   
         // Duplicate size of the list 
-        (**arrayList).max_elements = (**arrayList).max_elements * 2;
-        (**arrayList).array = realloc((**arrayList).array, sizeof(unsigned int) * ((**arrayList).max_elements));
+        arrayList->max_elements = arrayList->max_elements * 2;
+        arrayList->array = realloc(arrayList->array, sizeof(unsigned int) * (arrayList->max_elements));
 
-        if (*arrayList == NULL)
+        if (arrayList->array == NULL)
         {
             fprintf(stderr, "ERROR: Could not add element %i to the ArrayList. Memory is full. Aborting... \n", element);
             exit(ERROR_FULL_DATA_STRUCTURE);  // Abort the program
         }
 
     }
-    (**arrayList).array[(**arrayList).num_elements] = element;
-    (**arrayList).num_elements++;
+    arrayList->array[arrayList->num_elements] = element;
+    arrayList->num_elements++;
 }
 
 
@@ -153,7 +153,7 @@ unsigned int get(ArrayList arrayList, unsigned int position)
  * @param position ArrayList
  * @return element at last position
  */
-unsigned int pop(ArrayList *arrayList, unsigned int position)
+unsigned int removeAt(ArrayList *arrayList, unsigned int position)
 {
     if (arrayList == NULL)
     {
@@ -181,12 +181,15 @@ unsigned int pop(ArrayList *arrayList, unsigned int position)
 }
 
 
+/*
+ * DECORATOR FUNCTIONS
+ */
 /**
- * Removes last element added to the ArrayList and returns it.
+ * Pops last element added to the ArrayList and returns it.
  * @param arrayList ArrayList
  * @return element at last position
  */
-unsigned int removeLast(ArrayList *arrayList)
+unsigned int pop(ArrayList *arrayList)
 {
     if (arrayList == NULL)
     {
@@ -200,6 +203,7 @@ unsigned int removeLast(ArrayList *arrayList)
     }
     return arrayList->array[--arrayList->num_elements];
 }
+
 
 /**
  * Returns last added element to the list.
@@ -218,26 +222,27 @@ unsigned int tail(ArrayList arrayList)
 
 
 /**
- * Returns true if the ArrayList is empty. False otherwise.
- * @param arrayList ArrayList
- * @return
+ *
+ * @param arrayList
+ * @param elements
  */
-bool isEmpty(ArrayList arrayList)
+void addValues(ArrayList *arrayList, unsigned int elements[], unsigned int num_elements)
 {
-    return (arrayList.num_elements == 0);
+    if (arrayList == NULL)
+    {
+        fprintf(stderr, "ERROR: Could add values to the ArrayList. The ArrayList does not exist. Aborting... \n");
+        exit(ERROR_NONEXISTENT_DATA_STRUCTURE);  // Abort the program
+    }
+    for (int i = 0; i < num_elements; i++)
+    {
+        add(arrayList, elements[i]);
+    }
 }
 
 
-/**
- * Returns true if the ArrayList is full. False otherwise.
- * @param arrayList ArrayList
- * @return
+/*
+ * PROJECT SPECIFIC FUNCTIONS
  */
-bool isFull(ArrayList arrayList)
-{
-    return (arrayList.num_elements == arrayList.max_elements);
-}
-
 
 /**
  * Converts the data structure to a string that contains at least the first and last 100 elements.
@@ -249,6 +254,10 @@ char* toString(ArrayList arrayList)
     int offset = 0;
     if (arrayList.num_elements >= 200)
     {
+        /*
+         * At least 200 ints that converted to string fill at least 10 chars of space plus 1 space each.
+         * Plus 5 spaces for the separation line plus the endstring character.
+         */
         msg = (char *) malloc(sizeof(char) * 200 * (1 + 10) + 5 + 1);
         for (int i = 0; i < 200; i++)
         {
@@ -270,5 +279,88 @@ char* toString(ArrayList arrayList)
 
     }
     return msg;
+
+
+/**
+ * Populates the ArrayList with the number of elements passed by parameter.
+ * @param arrayList ArrayList
+ * @param num_elements Number of random element added to the vector.
+ */
+void populate(ArrayList *arrayList, int num_elements)
+{
+    if (arrayList == NULL)
+    {
+        fprintf(stderr, "ERROR: Could not populate the ArrayList. The ArrayList does not exist. Aborting... \n");
+        exit(ERROR_NONEXISTENT_DATA_STRUCTURE);  // Abort the program
+    }
+    for (int i = 0; i < num_elements; i++)
+    {
+        add(arrayList, rand() % 100);
+    }
+}
+
+
+/**
+ * Sorts the vector using the bubble-sort algorithm.
+ * @param arrayList ArrayList
+**/
+void sortBubble(ArrayList *arrayList)
+{
+    if (arrayList == NULL)
+    {
+        fprintf(stderr, "ERROR: Could not perform the sortBubble on the ArrayList. The ArrayList does not exist. Aborting... \n");
+        exit(ERROR_NONEXISTENT_DATA_STRUCTURE);  // Abort the program
+    }
+    bool swapped = false;
+
+    for (int i = 0; i < arrayList->num_elements - 1; i++)
+    {
+        for (int j = 0; j < arrayList->num_elements - 1 - i; j++)
+        {
+            if (arrayList->array[j] > arrayList->array[j + 1])
+            {
+                swap(arrayList->array, j, j + 1);
+                swapped = true;
+            }
+        }
+        if (!swapped) break;
+    }
+}
+
+
+/**
+ *
+ * @param arrayList
+ * @param value
+ * @param counter
+ * @return
+**/
+unsigned int searchBinary(ArrayList arrayList, unsigned int value, int *counter)
+{
+    unsigned int inferior = 0, superior = lenght - 1, new_offset;
+    int position = -1;
+    *counter = 0;
+
+    while (inferior <= superior && position == -1)
+    {
+        new_offset = (superior - inferior) / 2 + inferior;
+        *counter = *counter + 1;
+        if (arrayList.array[new_offset] == value)
+        {
+            position = new_offset;
+        }
+        else
+        {
+            if(arrayList.array[new_offset] > value)
+            {
+                superior = new_offset - 1;
+            }
+            else
+            {
+                inferior = new_offset + 1;
+            }
+        }
+    }
+    return (unsigned int) position;
 }
 
