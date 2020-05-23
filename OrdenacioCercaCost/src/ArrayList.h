@@ -11,8 +11,8 @@
 #include <stdio.h>  // To use printf and file manipulation functions
 #include <limits.h>  // To use datatype sumbols such as INT_MIN
 #include <string.h>  // To use the String library
-#include <random.h>  // To use the pseudorandom number generator
 #include <math.h>  // To use square root
+#include <time.h>  // To choose a random seed in combination with srand
 
 
 // Project includes
@@ -44,7 +44,7 @@ unsigned int tail(ArrayList arrayList);
 void addValues(ArrayList *arrayList, unsigned int elements[], unsigned int num_elements);
 
 // Specific project functions
-char* toString(ArrayList arrayList);
+void toString(ArrayList arrayList);
 void populate(ArrayList *arrayList, int num_elements);
 void sortBubble(ArrayList *arrayList);
 unsigned int searchBinary(ArrayList arrayList, unsigned int value, int *counter);

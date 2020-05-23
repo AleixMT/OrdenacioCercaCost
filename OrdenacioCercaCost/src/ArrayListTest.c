@@ -6,7 +6,7 @@
 const unsigned int sizes[] = {10, 50, 100, 1000, 2000, 5000, 10000};
 const unsigned int number_sizes = 7, number_samples = 10, number_tests = 3, number_parameters = 3;
 
-int sum(int array[], unsigned int num_elements)
+double sum(unsigned int array[], unsigned int num_elements)
 {
     int sum = 0;
     for (int i = 0; i < num_elements; i++)
@@ -16,39 +16,35 @@ int sum(int array[], unsigned int num_elements)
     return sum;
 }
 
-double* calculateMetrix(int array[number_sizes][number_samples])
+void calculateMetrix(unsigned int array[number_sizes][number_samples], double result[number_sizes][number_parameters])
 {
-    double result[7][3];
-    int sum = 0;
     for (int i = 0; i < number_sizes; i++)
     {
         result[i][0] = sizes[i];
     }
     for (int i = 0; i < number_sizes; i++)
     {
-        result[i][1] = sum(array[i]) / number_samples;
+        result[i][1] = sum(array[i], number_samples) / (double) number_samples;
     }
     for (int i = 0; i < number_sizes; i++)
     {
-        array[i][2] = 0;
+        result[i][2] = 0;
         for (int j = 0; j < number_samples; j++)
         {
             result[i][2] += (array[i][j] - result[i][1]) * (array[i][j] - result[i][1]);
         }
-        result[i][2] = math.sqrt(result[i][2] / number_samples);
-
+        result[i][2] = sqrt(result[i][2] / (double) number_samples);
     }
-    return result;
 }
 
 void printResults(double results[number_sizes][number_parameters])
 {
-    printf("\n Mida   Mitjana   Desviació\n");
+    printf("\nMida\tMitjana\tDesviació\n");
     for (int i = 0; i < number_sizes; i++)
     {
         for (int j = 0; j < number_parameters; j++)
         {
-            printf(" %d ", results[i][j]);
+            printf("%f\t", results[i][j]);
         }
         printf("\n");
     }
@@ -59,41 +55,45 @@ int main(int argc, char *argv[]) {
     srand(time(NULL));
 
     // Populate
+    printf("Proves populate\n");
     ArrayList *arrayList;
 	create(&arrayList);
     populate(arrayList, 100);
-    printf("%s", toString(*arrayList));
-    destroy(&arrayList);
+    //printf("%s", toString(*arrayList));
+    destroy(arrayList);
 
     // Bubble Sort
-    create(&arrayList);
-    populate(arrayList, 100);
-    sortBubble(&arrayList);
-    printf("%s", toString(*arrayList));
-    destroy(&arrayList);
-
-    // Dicotomic Search
-    create(&arrayList);
-    populate(arrayList, 1000);
-    sortBubble(&arrayList);
-    printf("%s", toString(*arrayList));
-    destroy(&arrayList);
+    printf("Proves bubblesort\n");
+    ArrayList *arrayListBubble;
+    create(&arrayListBubble);
+    populate(arrayListBubble, 100);
+    sortBubble(arrayListBubble);
+    //printf("%s", toString(*arrayListBubble));
+    destroy(arrayListBubble);
 
     // Binary search
+    int counter;
+    printf("Proves cerca dicotómica\n");
     create(&arrayList);
     populate(arrayList, 1000);
-    sortBubble(&arrayList);
-    searchBinary(*arrayList, )
-    printf("%s", toString(*arrayList));
-    destroy(&arrayList);
+    int random;
+    int pos = searchBinary(*arrayList, get(*arrayList, random = rand() % 1000), &counter);
+    if (pos != -1)
+    {
+        printf("superada");
+    }
+    sortBubble(arrayList);
+    searchBinary(*arrayList, get(*arrayList, rand() % arrayList->num_elements), &counter);
+    destroy(arrayList);
 
     // Results
-    unsigned int results_present_element[7][10];
-    unsigned int results_random_element[7][10];
-    unsigned int results_not_present_element[7][10];
-    double parameters_present_element[7][3];
-    double parameters_random_element[7][3];
-    double parameters_not_present_element[7][3];
+    printf("Resultats pràctica: (pot tardar uns quants segons)\n");
+    unsigned int results_present_element[number_sizes][number_samples];
+    unsigned int results_random_element[number_sizes][number_samples];
+    unsigned int results_not_present_element[number_sizes][number_samples];
+    double parameters_present_element[number_sizes][number_parameters];
+    double parameters_random_element[number_sizes][number_parameters];
+    double parameters_not_present_element[number_sizes][number_parameters];
 
     for (int i = 0; i < number_sizes; i++)
     {
@@ -115,34 +115,38 @@ int main(int argc, char *argv[]) {
                     }
                     case 1:
                     {
-                        searchBinary(*arrayList, rand(), &counter);
+                        searchBinary(*arrayList, (rand() % (sizes[i] * 2)), &counter);
                         results_random_element[i][j] = counter;
                         break;
                     }
                     case 2:
                     {
                         unsigned int random_not_present;
-                        while (searchBinary(*arrayList, random_not_present = rand(), &counter) {}
+                        while (searchBinary(*arrayList, random_not_present = (rand() % (sizes[i] * 2)), &counter) != -1) {}
+
                         results_not_present_element[i][j] = counter;
                         break;
                     }
+                    default:
+                    {
+                        exit(ERROR_BAD_PARAMETERS);
+                        break;
+                    }
                 }
-                destroy(&arrayList);
+                destroy(arrayList);
             }
         }
     }
-    parameters_present_element = calculateMetrix(results_present_element);
-    parameters_random_element = calculateMetrix(results_random_element)
-    parameters_not_present_element = calculateMetrix(results_not_present_element);
+    printf("wat\n");
+    calculateMetrix(results_present_element, parameters_present_element);
+    calculateMetrix(results_random_element, parameters_random_element);
+    calculateMetrix(results_not_present_element, parameters_not_present_element);
 
-    printf("Element present:\n");
+    printf("\n\nElement present:\n");
     printResults(parameters_present_element);
-    printf("Element aleatori:\n");
+    printf("\n\nElement aleatori:\n");
     printResults(parameters_random_element);
-    printf("Element no present:\n");
+    printf("\n\nElement no present:\n");
     printResults(parameters_not_present_element);
-
-	printf("Get 0, 4, ultim llista: %u %u %u\n", get(*arrayList, 0), get(*arrayList, 4), get(*arrayList, arrayList->num_elements - 1));
-	printf("%s", toString(*arrayList));
 
 }

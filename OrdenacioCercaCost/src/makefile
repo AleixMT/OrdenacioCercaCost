@@ -2,7 +2,7 @@ CC = gcc
 CFLAGS = -O3 -Wall
 
 test : ArrayList.o ArrayListTest.o
-	$(CC) $(CFLAGS) -o test ArrayList.o ArrayListTest.o
+	$(CC) $(CFLAGS) -o test ArrayList.o ArrayListTest.o -lm
 
 ArrayList.o : ArrayList.c
 	gcc -c ArrayList.c
@@ -15,4 +15,4 @@ run : test
 
 .PHONY : clean
 clean :
-	rm -f test.o
+	rm -f test.o ArrayList.o ArrayListTest.o

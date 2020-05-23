@@ -4,7 +4,6 @@
 // Created by Sergi Vives on 14/4/20.
 //
 
-}
 /*
  * PRIVATE FUNCTIONS
  */
@@ -35,6 +34,7 @@ void swap(unsigned int array[], int i, int j)
  */
 void create(ArrayList **arrayList)
 {
+    const unsigned int size = 10;  // HC for 10 unsigned ints
     // Reserve memory for the data structure of the ArrayList
     *arrayList = (ArrayList*) malloc(sizeof(ArrayList));
     if (*arrayList == NULL)
@@ -44,14 +44,14 @@ void create(ArrayList **arrayList)
     }
 
     // Reserve memory for the array of the ArrayList
-    (**arrayList).array = malloc(sizeof(unsigned int) * 10);
+    (**arrayList).array = malloc(sizeof(unsigned int) * size);  // HC for 10 unsigned ints
     if ((**arrayList).array == NULL)
     {
         fprintf(stderr, "ERROR: Could not allocate memory for the array of ArrayList. Aborting... \n");
         exit(ERROR_CREATE);  // Abort program
     }
 
-    (**arrayList).max_elements = size;
+    (**arrayList).max_elements = size;  // HC for 10 unsigned ints
     (**arrayList).num_elements = 0;
 }
 
@@ -245,20 +245,61 @@ void addValues(ArrayList *arrayList, unsigned int elements[], unsigned int num_e
  */
 
 /**
+ * Printf to standard output the array contained inside of the arrayList
+ * @param arrayList
+ */
+void toString(ArrayList arrayList)
+{
+    printf("ArrayList. %d elements. %d current max size. Array content:\n", arrayList.num_elements, arrayList.max_elements);
+    if (arrayList.num_elements < 200)
+    {
+        for (int i = 0; i < arrayList.num_elements; i++)
+        {
+            printf("%d ", arrayList.array[i]);
+        }
+    }
+    else
+    {
+        for (int i = 0; i < 100; i++)
+        {
+            printf("%d ", arrayList.array[i]);
+        }
+        printf("\n...\n");
+        for (int i = arrayList.num_elements - 100; i < arrayList.num_elements; i++)
+        {
+            printf("%d ", arrayList.array[i]);
+        }
+    }
+    printf("\n");
+}
+
+/*
+/**
  * Converts the data structure to a string that contains at least the first and last 100 elements.
  * @param arrayList ArrayList
- **/
+ **/ /*
 char* toString(ArrayList arrayList)
 {
-    char* msg = NULL;
+    char *msg = NULL;
     int offset = 0;
-    if (arrayList.num_elements >= 200)
+
+    msg = (char *) malloc(sizeof(char) * arrayList.num_elements * (10 + 1) + 1 + 1);
+    for (int i = 0; i < arrayList.num_elements; i++)
+    {
+        printf("%i\n", offset);
+        offset += sprintf(&(msg[offset]), "%d ", arrayList.array[i]);
+    }
+    offset += sprintf(&(msg[offset]), "\n");
+
+    printf("Reservo pa %lu i consumo %i\n", sizeof(char) * arrayList.num_elements * (10 + 1) + 1, offset);
+
+    if (arrayList.num_elements <>=> 200)
     {
         /*
          * At least 200 ints that converted to string fill at least 10 chars of space plus 1 space each.
-         * Plus 5 spaces for the separation line plus the endstring character.
-         */
-        msg = (char *) malloc(sizeof(char) * 200 * (1 + 10) + 5 + 1);
+         * Plus 3 spaces for the separation line plus 3 endlines plus the endstring character.
+
+        msg = (char *) malloc(sizeof(char) * 200 * (1 + 10) + 6 + 1);
         for (int i = 0; i < 200; i++)
         {
             offset += sprintf(&(msg[offset]), "%d ", arrayList.array[i]);
@@ -279,7 +320,7 @@ char* toString(ArrayList arrayList)
 
     }
     return msg;
-
+}*/
 
 /**
  * Populates the ArrayList with the number of elements passed by parameter.
@@ -337,21 +378,20 @@ void sortBubble(ArrayList *arrayList)
 **/
 unsigned int searchBinary(ArrayList arrayList, unsigned int value, int *counter)
 {
-    unsigned int inferior = 0, superior = lenght - 1, new_offset;
-    int position = -1;
+    int inferior = 0, superior = arrayList.num_elements - 1, new_offset, position = -1;
     *counter = 0;
 
     while (inferior <= superior && position == -1)
     {
         new_offset = (superior - inferior) / 2 + inferior;
-        *counter = *counter + 1;
+        (*counter)++;
         if (arrayList.array[new_offset] == value)
         {
             position = new_offset;
         }
         else
         {
-            if(arrayList.array[new_offset] > value)
+            if (arrayList.array[new_offset] > value)
             {
                 superior = new_offset - 1;
             }
